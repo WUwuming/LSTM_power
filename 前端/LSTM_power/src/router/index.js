@@ -2,12 +2,34 @@ import {createRouter, createWebHistory} from "vue-router"
 
 
 let routes = [{
-    name: 'Home',
-    path: '/home',
-    component: () => import('../views/Home.vue'),
+    name: 'Gate',
+    path: '/gate',
+    component: () => import('../views/Gate.vue'),
+    children: [
+        {
+            name: 'Home',
+            path: '/gate/home',
+            component: () => import('../views/GateChild/Home.vue')
+        }, {
+            name: 'Introduce',
+            path: '/gate/introduce',
+            component: () => import('../views/GateChild/Introduce.vue')
+        }, {
+            name: 'Pay',
+            path: '/gate/pay',
+            component: () => import('../views/GateChild/Pay.vue')
+        }, {
+            name: 'About',
+            path: '/gate/about',
+            component: () => import('../views/GateChild/About.vue')
+        }, {
+            path: "/gate",
+            redirect: '/gate/home'
+        }
+    ]
 }, {
     path: "",
-    redirect: "/home",
+    redirect: "/gate",
 }]
 
 const router = createRouter({
