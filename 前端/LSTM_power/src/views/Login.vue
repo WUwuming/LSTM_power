@@ -125,7 +125,6 @@ const handleclick = async () => {
     display: flex;
     justify-content: center;
     padding-bottom: 50px;
-    /* font-family: 萝莉体; */
 }
 
 form {
