@@ -28,6 +28,14 @@ let routes = [{
         }
     ]
 }, {
+    name:'Login',
+    path: '/login',
+    component:()=>import('../views/Login.vue')
+}, {
+    name:'Register',
+    path: '/register',
+    component:()=>import('../views/Register.vue')
+}, {
     path: "",
     redirect: "/gate",
 }]

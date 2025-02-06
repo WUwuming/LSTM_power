@@ -57,6 +57,7 @@ li {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  transition: 0.2s;
 }
 
 .BarItem > img {
@@ -65,5 +66,10 @@ li {
 
 .BarItem:hover {
   background-color: #999999;
+  transition: 0.4s;
+}
+
+a{
+  text-decoration: none;
 }
 </style>

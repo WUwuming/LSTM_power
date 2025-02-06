@@ -10,8 +10,8 @@
         </el-container>
         <el-footer>
           <div id="buttonBar">
-            <el-button type="success">注册账号</el-button>
-            <el-button type="primary">管理面板</el-button>
+            <el-button type="success" @click="clickRegister">注册账号</el-button>
+            <el-button type="primary" @click="clickManage">管理面板</el-button>
           </div>
         </el-footer>
       </el-container>
@@ -20,7 +20,16 @@
 </template>
 
 <script setup>
+import {useRouter} from "vue-router";
 
+const router = useRouter()
+let clickRegister = ()=>{
+  router.push('/Register')
+}
+
+let clickManage = ()=>{
+  router.push('/Manage')
+}
 </script>
 
 <style scoped>
