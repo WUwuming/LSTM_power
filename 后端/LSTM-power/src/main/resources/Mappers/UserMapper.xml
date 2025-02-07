@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiu.lstmpower.Dao.UserDao">
+<!--    用户注册-->
+    <insert id="Register" parameterType="com.qiu.lstmpower.Entity.User">
+        INSERT INTO users (UserId,UserName,UserEmail,Password,level)
+        VALUES (#{UserId},#{UserName},#{UserEmail},#{Password},#{level})
+    </insert>
+<!--判断是否有重复注册用户-->
+    <select id="Existence" parameterType="String" resultType="com.qiu.lstmpower.Entity.User">
+        SELECT * FROM `users` WHERE UserEmail = #{UserEmail}
+    </select>
+</mapper>
+

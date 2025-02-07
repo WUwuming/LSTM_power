@@ -7,6 +7,7 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -16,9 +17,10 @@ public class EmailController {
     @Resource
     EmailService emailService;
 
+    //往邮箱发送验证码
     @GetMapping("/GetVerificationCode")
     @ResponseBody
-    private JsonResult GetVerificationCode(HttpServletRequest request,String userEmail){
+    public JsonResult GetVerificationCode(HttpServletRequest request,String userEmail){
         JsonResult jsonResult;
         try {
             jsonResult =  emailService.SendVerificationCode(userEmail);

@@ -52,4 +52,25 @@ public class JsonResult implements Serializable {
         jr.msg = "LOGIN FAIL";
         return jr;
     }
+
+    public static JsonResult RegisterFail(){
+        JsonResult jr = new JsonResult();
+        jr.code = 202;
+        jr.msg = "注册失败，已存在该用户";
+        return jr;
+    }
+
+    public static JsonResult CodeFail(){
+        JsonResult jr = new JsonResult();
+        jr.code = 203;
+        jr.msg = "验证码错误";
+        return jr;
+    }
+
+    public static JsonResult OutOfToken(){
+        JsonResult jr = new JsonResult();
+        jr.code = 210;
+        jr.msg = "Token错误";
+        return jr;
+    }
 }

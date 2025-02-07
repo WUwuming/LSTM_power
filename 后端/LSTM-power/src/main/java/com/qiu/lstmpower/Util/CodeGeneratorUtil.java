@@ -23,8 +23,8 @@ public class CodeGeneratorUtil {
      * 雪花算法生成用户ID
      * @return
      */
-    public static long snowflake(){
-        return IdUtil.getSnowflakeNextId();
+    public static String snowflake(){
+        return String.valueOf(IdUtil.getSnowflakeNextId());
     }
 
 

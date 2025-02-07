@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: LSTM-power
@@ -14,5 +17,14 @@ spring:
     default-encoding: utf-8
     ssl:
       enabled: true
-server:
-  port: 8080
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lstm?&useSSL=false&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai#
+    username: root
+    password: 2350852666
+
+
+mybatis:
+  mapper-locations: classpath:/Mappers/*.xml
+  type-aliases-package: com.qiu.lstmpower.Entity

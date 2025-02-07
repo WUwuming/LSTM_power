@@ -41,7 +41,7 @@ public class EmailServiceImpl implements EmailService {
         String code = CodeGeneratorUtil.generateCode(6);
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
         //设置邮件内容
-        helper.setText("<p style='color:black'>Dear Customer 您的验证码为：</p></br><h1>" + code + "</h1></br><p>10分钟后过期，如果不是您的请忽略</p>");
+        helper.setText("<p style='color:black'>Dear Customer 您的验证码为：</p></br><h1>" + code + "</h1></br><p>5分钟后过期，如果不是您的请忽略</p>");
         //设置邮件主题
         helper.setSubject("光伏发电系统验证码--验证码");
         System.out.println("正在发往邮箱:" + userEmail + "...");
@@ -49,8 +49,8 @@ public class EmailServiceImpl implements EmailService {
         helper.setTo(userEmail);
         //发件人
         helper.setFrom(SenderEmail);
-        //将邮件存入redis，有效时间10分钟
-        redisTemplate.opsForValue().set(userEmail, code, Duration.ofMinutes(10));
+        //将邮件存入redis，有效时间5分钟
+        redisTemplate.opsForValue().set(userEmail, code, Duration.ofMinutes(5));
         //发送邮件
         mailSender.send(mimeMessage);
         System.out.println("发送成功！");
@@ -58,12 +58,4 @@ public class EmailServiceImpl implements EmailService {
         return jsonResult;
     }
 
-    @Override
-    public JsonResult CheckVerificationCode(String userEmail, String code) {
-        JsonResult jsonResult;
-
-
-
-        return null;
-    }
 }

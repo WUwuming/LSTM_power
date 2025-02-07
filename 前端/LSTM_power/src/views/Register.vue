@@ -15,7 +15,8 @@
             <img src="../assets/OK.svg" v-show="Register.isEmail">
           </div>
           <div id="inRowLine">
-            <input class="acc" type="password" v-model="Register.password" placeholder="密码" autocomplete="off">
+            <input class="acc" type="password" v-model="Register.password"
+                   placeholder="密码(6到16位数，需包含数字和字母)" autocomplete="off">
             <img src="../assets/OK.svg" v-show="Register.isPassword">
           </div>
           <div id="inRowLine">
@@ -26,11 +27,9 @@
             <input class="codeInput" type="text" v-model="Register.code" placeholder="验证码">
             <input id="getCode" type="button" :value="codeValue" @click="getCode">
           </div>
-          <span v-show="isShowErro" style="color: red;">{{ errorMsg }}</span>
-
-          <input class="button" type="button" @click="RegisterClick" value="登入">
+          <input class="button" type="button" @click="RegisterClick" value="注册">
           <div class="but">
-            <a><input type="button" value="我有账号前往登入" @click="register"></a>
+            <a><input type="button" value="我有账号前往登入" @click="ToLogin"></a>
           </div>
         </form>
       </div>
@@ -41,14 +40,14 @@
 
 <script setup>
 import axios from 'axios';
-import {ref, reactive, watch} from 'vue';
+import {ref, reactive, watch, inject} from 'vue';
 import {useRouter} from 'vue-router'
+import {ElNotification} from "element-plus";
 
 const Router = useRouter()
 const token = ref('')
+const api = inject('$api')  //全局的request地址
 const codeValue = '获取验证码'
-const errorMsg = ref('')
-let isShowErro = ref(true)
 const Register = reactive({
   email: "",
   password: "",
@@ -74,7 +73,7 @@ watch(Register, (newValue, oldValue) => {
 })
 
 //跳转登入界面
-const register = () => {
+const ToLogin = () => {
   Router.push("/Login")
 }
 
@@ -82,37 +81,60 @@ const register = () => {
 const getCode = async () => {
   let res = null
   if (Register.isEmail) {
-    res = await axios({
+    res = await api({
       method: 'get',
-      url: '',
+      url: '/Mail/GetVerificationCode',
       params: {
-        email:Register.email
+        userEmail: Register.email
       }
     })
   }
+  console.log(res)
 }
 
 //注册逻辑
 const RegisterClick = async () => {
-  const res = await axios({
-    method: "POST",
-    url: '',
-    params: {
-      Login: Register.email,
-      UserPassword: Register.password
+  let res = null;
+  if (Register.isEmail && Register.isPassword && Register.samePassword) {
+    res = await api({
+      method: 'post',
+      url: '/User/Register',
+      params: {
+        UserName: Register.email,
+        UserEmail: Register.email,
+        Password: Register.password,
+        Code:Register.code
+      }
+    })
+    if (res.data.code === 200) {
+      ElNotification({
+        title: '注册消息',
+        message: '注册成功',
+        type: 'success'
+      })
+    } else if (res.data.code === 202) {
+      ElNotification({
+        title: '注册消息',
+        message: res.data.msg,
+        type: 'error'
+      })
+    }else if(res.data.code === 203){
+      ElNotification({
+        title: '注册消息',
+        message: res.data.msg,
+        type: 'error'
+      })
     }
-  })
-  if (res.data.data !== null) {
-    token.value = res.data.data
-    localStorage.setItem("token", token.value)
-    isShowErro = false
-    Router.push("/order")
   } else {
-    Login.login = ''
-    Login.password = ''
-    isShowErro = true
+    ElNotification({
+        title: '注册消息',
+        message: '请按要求填写完整',
+        type: 'error'
+      })
   }
+}
 
+const afterClickGetCode=()=>{
 
 }
 </script>
