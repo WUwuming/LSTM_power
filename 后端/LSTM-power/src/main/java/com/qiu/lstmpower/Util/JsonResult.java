@@ -1,0 +1,55 @@
+package com.qiu.lstmpower.Util;
+
+import lombok.Data;
+
+import java.io.Serializable;
+
+@Data
+public class JsonResult implements Serializable {
+    private int code;
+    private String msg;
+    private Object data;
+
+    public JsonResult setData(Object data) {
+        this.data = data;
+        return this;
+    }
+
+    /**
+     * 自定义文本
+     *
+     * @param code 代码
+     * @param msg  文本
+     * @return
+     */
+    public JsonResult Custom(int code, String msg) {
+        JsonResult jr = new JsonResult();
+        jr.code = code;
+        jr.msg = msg;
+        return jr;
+    }
+
+    /**
+     * 操作成功
+     */
+    public static JsonResult OK() {
+        JsonResult jr = new JsonResult();
+        jr.code = 200;
+        jr.msg = "HTTP OK";
+        return jr;
+    }
+
+    public static JsonResult Fail(){
+        JsonResult jr = new JsonResult();
+        jr.code = 400;
+        jr.msg = "Fail";
+        return jr;
+    }
+
+    public static JsonResult loginFail() {
+        JsonResult jr = new JsonResult();
+        jr.code = 201;
+        jr.msg = "LOGIN FAIL";
+        return jr;
+    }
+}
