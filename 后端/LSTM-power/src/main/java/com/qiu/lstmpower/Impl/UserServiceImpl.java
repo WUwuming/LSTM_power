@@ -40,12 +40,13 @@ public class UserServiceImpl implements UserService {
         if (user == null){
             jsonResult = JsonResult.loginFail();
         }else {
-            user.setPassword("");
             jsonResult = JsonResult.OK();
-            jsonResult.setData(user);
+            user.setPassword("");
+            jsonResult.setData(user);   //返回用户ID
         }
         return jsonResult;
     }
+
 
     private Boolean CheckVerificationCode(String userEmail, String Code) {
         String storedCode = redisTemplate.opsForValue().get(userEmail);

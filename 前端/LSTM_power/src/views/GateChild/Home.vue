@@ -21,19 +21,26 @@
 
 <script setup>
 import {useRouter} from "vue-router";
+import {inject} from "vue";
 
 const router = useRouter()
-let clickRegister = ()=>{
+const api = inject('$api')
+let clickRegister = () => {
   router.push('/Register')
 }
 
-let clickManage = ()=>{
-  router.push('/Manage')
+let clickManage = async () => {
+  const res = await api.get('/User/CheckSession')
+  console.log(res)
+  if (res.data) {
+    await router.push('/Manage')
+  }else await router.push('/Login')
+
 }
 </script>
 
 <style scoped>
-span{
+span {
   color: white;
 }
 

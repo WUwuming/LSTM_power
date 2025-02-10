@@ -2,7 +2,7 @@
   <div class="bigBox">
     <div class="box">
       <div class="main-left">
-        <img src="../assets/1.jpg" alt="">
+        <img src="../assets/Login.jpg" alt="">
       </div>
       <div class="main-right">
         <div class="text-top">
