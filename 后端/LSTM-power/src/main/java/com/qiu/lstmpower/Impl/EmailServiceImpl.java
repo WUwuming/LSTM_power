@@ -53,6 +53,7 @@ public class EmailServiceImpl implements EmailService {
         redisTemplate.opsForValue().set(userEmail, code, Duration.ofMinutes(5));
         //发送邮件
         mailSender.send(mimeMessage);
+
         System.out.println("发送成功！");
         jsonResult = JsonResult.OK().setData("邮件已经发送");
         return jsonResult;

@@ -1,5 +1,7 @@
 <template>
-
+  <div>
+    manage
+  </div>
 </template>
 
 <script setup>

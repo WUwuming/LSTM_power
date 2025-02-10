@@ -28,3 +28,4 @@ spring:
 mybatis:
   mapper-locations: classpath:/Mappers/*.xml
   type-aliases-package: com.qiu.lstmpower.Entity
+

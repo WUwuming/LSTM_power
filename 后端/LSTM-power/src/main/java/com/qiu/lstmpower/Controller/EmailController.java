@@ -25,7 +25,6 @@ public class EmailController {
         try {
             jsonResult =  emailService.SendVerificationCode(userEmail);
         } catch (MessagingException e) {
-            jsonResult = JsonResult.Fail();
             throw new RuntimeException(e);
         }
         return  jsonResult;

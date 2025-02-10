@@ -49,7 +49,7 @@ public class JsonResult implements Serializable {
     public static JsonResult loginFail() {
         JsonResult jr = new JsonResult();
         jr.code = 201;
-        jr.msg = "LOGIN FAIL";
+        jr.msg = "账号或密码错误";
         return jr;
     }
 

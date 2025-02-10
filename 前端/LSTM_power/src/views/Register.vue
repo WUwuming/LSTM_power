@@ -25,7 +25,7 @@
           </div>
           <div id="inRowLine">
             <input class="codeInput" type="text" v-model="Register.code" placeholder="验证码">
-            <input id="getCode" type="button" :value="codeValue" @click="getCode">
+            <input id="getCode" type="button" :value="codeValue" @click="getCode" :disabled="isDisabled">
           </div>
           <input class="button" type="button" @click="RegisterClick" value="注册">
           <div class="but">
@@ -39,15 +39,14 @@
 </template>
 
 <script setup>
-import axios from 'axios';
 import {ref, reactive, watch, inject} from 'vue';
 import {useRouter} from 'vue-router'
 import {ElNotification} from "element-plus";
 
 const Router = useRouter()
-const token = ref('')
 const api = inject('$api')  //全局的request地址
-const codeValue = '获取验证码'
+let codeValue = ref('获取验证码')
+const isDisabled = ref(false); //按钮是否禁用
 const Register = reactive({
   email: "",
   password: "",
@@ -61,15 +60,9 @@ const EmailPattern = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z]{2,4})
 const PasswordPattern = /^(?=.*\d)(?=.*[a-zA-Z])[\da-zA-Z]{6,16}$/
 
 watch(Register, (newValue, oldValue) => {
-  if (EmailPattern.test(newValue.email))
-    Register.isEmail = true
-  else Register.isEmail = false
-  if (PasswordPattern.test(newValue.password))
-    Register.isPassword = true
-  else Register.isPassword = false
-  if (newValue.password === newValue.repassword && Register.isPassword === true)
-    Register.samePassword = true
-  else Register.samePassword = false
+  Register.isEmail = EmailPattern.test(newValue.email);
+  Register.isPassword = PasswordPattern.test(newValue.password);
+  Register.samePassword = newValue.password === newValue.repassword && Register.isPassword === true;
 })
 
 //跳转登入界面
@@ -79,17 +72,22 @@ const ToLogin = () => {
 
 //获取邮箱验证码
 const getCode = async () => {
-  let res = null
   if (Register.isEmail) {
-    res = await api({
+    afterClickGetCode()
+    await api({
       method: 'get',
       url: '/Mail/GetVerificationCode',
       params: {
         userEmail: Register.email
       }
     })
+  } else {
+    ElNotification({
+      title: '注册消息',
+      message: '请输入邮箱',
+      type: 'error'
+    })
   }
-  console.log(res)
 }
 
 //注册逻辑
@@ -103,22 +101,23 @@ const RegisterClick = async () => {
         UserName: Register.email,
         UserEmail: Register.email,
         Password: Register.password,
-        Code:Register.code
+        Code: Register.code
       }
     })
     if (res.data.code === 200) {
       ElNotification({
         title: '注册消息',
-        message: '注册成功',
+        message: '注册成功，请登入',
         type: 'success'
       })
+      await Router.push('/Login')
     } else if (res.data.code === 202) {
       ElNotification({
         title: '注册消息',
         message: res.data.msg,
         type: 'error'
       })
-    }else if(res.data.code === 203){
+    } else if (res.data.code === 203) {
       ElNotification({
         title: '注册消息',
         message: res.data.msg,
@@ -127,15 +126,26 @@ const RegisterClick = async () => {
     }
   } else {
     ElNotification({
-        title: '注册消息',
-        message: '请按要求填写完整',
-        type: 'error'
-      })
+      title: '注册消息',
+      message: '请按要求填写完整',
+      type: 'error'
+    })
   }
 }
 
-const afterClickGetCode=()=>{
-
+const afterClickGetCode = () => {
+  isDisabled.value = true;
+  let countdown = 60;
+  let time = setInterval(() => {
+    if (countdown === 0) {
+      clearInterval(time);
+      isDisabled.value = false
+      codeValue.value = '获取验证码'
+    }else {
+      countdown = countdown - 1
+    codeValue.value = countdown.toString()
+    }
+  }, 1000)
 }
 </script>
 

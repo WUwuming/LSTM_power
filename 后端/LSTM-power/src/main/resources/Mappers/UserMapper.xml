@@ -12,5 +12,9 @@
     <select id="Existence" parameterType="String" resultType="com.qiu.lstmpower.Entity.User">
         SELECT * FROM `users` WHERE UserEmail = #{UserEmail}
     </select>
+<!--    用户登入-->
+    <select id="Login" parameterType="String" resultType="com.qiu.lstmpower.Entity.User">
+        SELECT * FROM `users` WHERE UserEmail = #{UserEmail} AND Password = #{Password}
+    </select>
 </mapper>
 

@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public JsonResult Register(User user, String Code) {
-        JsonResult jsonResult = null;
+        JsonResult jsonResult;
         //验证码判断
         if (CheckVerificationCode(user.getUserEmail(), Code)) {
             if (userDao.Existence(user.getUserEmail()).isEmpty()) {
@@ -31,9 +31,25 @@ public class UserServiceImpl implements UserService {
         return jsonResult;
     }
 
+    @Override
+    public JsonResult Login(String UserEmail, String Password) {
+        JsonResult jsonResult;
+
+        User user = userDao.Login(UserEmail,Password);
+
+        if (user == null){
+            jsonResult = JsonResult.loginFail();
+        }else {
+            user.setPassword("");
+            jsonResult = JsonResult.OK();
+            jsonResult.setData(user);
+        }
+        return jsonResult;
+    }
+
     private Boolean CheckVerificationCode(String userEmail, String Code) {
         String storedCode = redisTemplate.opsForValue().get(userEmail);
-        if(storedCode != null && storedCode.equals(Code)){
+        if(!Code.equals("") && storedCode.equals(Code)){
             redisTemplate.delete(userEmail); //验证成功后删除该键值对
             return true;
         }else return false;

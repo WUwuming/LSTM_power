@@ -35,6 +35,10 @@ let routes = [{
     name:'Register',
     path: '/register',
     component:()=>import('../views/Register.vue')
+},{
+    name:'Manage',
+    path: '/manage',
+    component:()=>import('../views/manage.vue')
 }, {
     path: "",
     redirect: "/gate",

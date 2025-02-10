@@ -5,12 +5,8 @@ import com.qiu.lstmpower.Service.UserService;
 import com.qiu.lstmpower.Util.CodeGeneratorUtil;
 import com.qiu.lstmpower.Util.JsonResult;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/User")
@@ -18,11 +14,10 @@ public class UserController {
     @Resource
     UserService userService;
 
-    @RequestMapping(value = "/Register",method = RequestMethod.POST)
+    @PostMapping("/Register")
     @ResponseBody
     public JsonResult Register(String UserName, String UserEmail, String Password,String Code) {
         String UserId = CodeGeneratorUtil.snowflake();  //获取用户ID
-        System.out.println(UserEmail+':'+Password);
         User user = new User();
         user.setUserId(UserId);
         user.setUserName(UserName);
@@ -30,5 +25,13 @@ public class UserController {
         user.setPassword(Password);
         user.setLevel('0');
         return userService.Register(user,Code);
+    }
+
+    @GetMapping("/Login")
+    @ResponseBody
+    public JsonResult Login(String UserEmail,String Password){
+        JsonResult jsonResult;
+        jsonResult = userService.Login(UserEmail,Password);
+        return jsonResult;
     }
 }
