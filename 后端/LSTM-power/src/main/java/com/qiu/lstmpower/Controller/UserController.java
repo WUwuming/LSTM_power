@@ -60,9 +60,15 @@ public class UserController {
         return jsonResult;
     }
 
+
+    /**
+     * 验证当前用户的session是否有效
+     * @param request
+     * @return
+     */
     @GetMapping("/CheckSession")
     @ResponseBody
-    public Boolean CheckSession(HttpServletRequest request) {
+    public boolean CheckSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         //session不存在
         if (session == null) return false;
@@ -72,5 +78,24 @@ public class UserController {
             //session无效
             return user != null;  //session有效
         }
+    }
+
+    @GetMapping("/GetUserName")
+    @ResponseBody
+    public JsonResult GetUserName(HttpServletRequest request) {
+        HttpSession session;
+        String UserName;
+        JsonResult jsonResult;
+        try {
+            session = request.getSession(false);
+            User user = (User) session.getAttribute("user");
+            UserName = user.getUserName();
+        } catch (Exception e) {
+            return JsonResult.Fail();
+        }
+        jsonResult = JsonResult.OK();
+        jsonResult.setData(UserName);
+        return jsonResult;
+
     }
 }

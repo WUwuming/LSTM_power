@@ -28,17 +28,32 @@ let routes = [{
         }
     ]
 }, {
-    name:'Login',
+    name: 'Login',
     path: '/login',
-    component:()=>import('../views/Login.vue')
+    component: () => import('../views/Login.vue')
 }, {
-    name:'Register',
+    name: 'Register',
     path: '/register',
-    component:()=>import('../views/Register.vue')
-},{
-    name:'Manage',
+    component: () => import('../views/Register.vue')
+}, {
+    name: 'Manage',
     path: '/manage',
-    component:()=>import('../views/manage.vue')
+    component: () => import('../views/manage.vue'),
+    children: [
+        {
+            name: 'Total',
+            path: '/manage/total',
+            component: () => import('../views/ManageChild/Total.vue')
+        }, {
+            name:'Site',
+            path: '/manage/site',
+            component:()=>import('../views/ManageChild/Site.vue')
+        },{
+            name:'Setting',
+            path: '/manage/setting',
+            component:()=>import('../views/ManageChild/Setting.vue')
+        }
+    ]
 }, {
     path: "",
     redirect: "/gate",

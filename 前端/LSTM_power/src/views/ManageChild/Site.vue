@@ -1,12 +1,12 @@
-<template>
-  <div>
-    manage
-  </div>
-</template>
-
 <script setup>
 
 </script>
+
+<template>
+  <div>
+    site
+  </div>
+</template>
 
 <style scoped>
 

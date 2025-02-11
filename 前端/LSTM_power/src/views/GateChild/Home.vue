@@ -31,7 +31,6 @@ let clickRegister = () => {
 
 let clickManage = async () => {
   const res = await api.get('/User/CheckSession')
-  console.log(res)
   if (res.data) {
     await router.push('/Manage')
   }else await router.push('/Login')
