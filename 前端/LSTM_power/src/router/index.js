@@ -52,6 +52,9 @@ let routes = [{
             name:'Setting',
             path: '/manage/setting',
             component:()=>import('../views/ManageChild/Setting.vue')
+        },{
+            path: '/manage',
+            redirect: '/manage/total',
         }
     ]
 }, {

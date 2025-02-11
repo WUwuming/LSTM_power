@@ -63,6 +63,7 @@ public class UserController {
 
     /**
      * 验证当前用户的session是否有效
+     *
      * @param request
      * @return
      */
@@ -82,20 +83,36 @@ public class UserController {
 
     @GetMapping("/GetUserName")
     @ResponseBody
-    public JsonResult GetUserName(HttpServletRequest request) {
+    public JsonResult GetUserNameAndId(HttpServletRequest request) {
         HttpSession session;
         String UserName;
+        String UserId;
         JsonResult jsonResult;
         try {
             session = request.getSession(false);
             User user = (User) session.getAttribute("user");
             UserName = user.getUserName();
+            UserId = user.getUserId();
         } catch (Exception e) {
             return JsonResult.Fail();
         }
         jsonResult = JsonResult.OK();
-        jsonResult.setData(UserName);
+        jsonResult.setData(UserName + "," + UserId);
         return jsonResult;
+    }
 
+    @GetMapping("/ExitLogin")
+    @ResponseBody
+    public JsonResult exitLogin(HttpServletRequest httpServletRequest) {
+        HttpSession session;
+        try {
+            session = httpServletRequest.getSession(false);
+            session.setMaxInactiveInterval(0);
+            session.removeAttribute("user");
+        }catch (Exception e){
+            System.out.println("session错误");
+            return JsonResult.Fail();
+        }
+        return JsonResult.OK();
     }
 }

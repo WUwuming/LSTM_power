@@ -5,10 +5,12 @@ import App from './App.vue'
 import router from './router'
 import ElementPlus from 'element-plus'
 import axiosInstance from './utils/request.js'
+import config from "./utils/config.js";
 
 const app = createApp(App)
 
 app.provide('$api',axiosInstance)
+app.provide('config',config)
 
 app.use(router)
 app.use(ElementPlus)

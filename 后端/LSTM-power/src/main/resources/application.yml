@@ -2,6 +2,8 @@ server:
   port: 8080
 
 spring:
+  messages:
+    encoding: UTF-8
   application:
     name: LSTM-power
   data:
@@ -29,3 +31,4 @@ mybatis:
   mapper-locations: classpath:/Mappers/*.xml
   type-aliases-package: com.qiu.lstmpower.Entity
 
+HEFENG-API: 1cd82ac20e594681a42618ee8ad02a6d

@@ -1,5 +1,33 @@
 <script setup>
+import {inject, onMounted, reactive, ref} from "vue";
 
+const api = inject("$api")
+
+/**
+ * TEG 今日发电量
+ * CPG 当前发电功率
+ * EPG 预计发电量
+ * Total 总发电量
+ * @type {Reactive<{TEG: number, Total: number, CPG: number, EPG: number}>}
+ */
+let Value = reactive({
+  TEG: 11,
+  CPG: 2,
+  EPG: 3,
+  Total: 4,
+})
+let TodayWeather = ref()
+onMounted(async () => {
+  const res = await api({
+    method: 'get',
+    url: '/Utils/GetWeather',
+    params: {
+      ADCode: '110115'
+    }
+  })
+  TodayWeather.value = JSON.parse(res.data.data)
+  console.log(TodayWeather.value)
+})
 </script>
 
 <template>
@@ -8,28 +36,27 @@
       <!--      今日发电量 -- 目前为止的发电量-->
       <div class="smallBox">
         <span class="smallTitle">今日发电量:</span>
-        <div class="smallValue">1mwh</div>
+        <div class="smallValue">{{ Value.TEG }}wh</div>
       </div>
       <!--      发电功率-->
       <div class="smallBox">
         <span class="smallTitle">当前发电功率:</span>
-        <div class="smallValue">
-
-          1mwh</div>
+        <div class="smallValue">{{ Value.CPG }}wh</div>
       </div>
       <!--      预计今日发电总量-->
       <div class="smallBox">
         <span class="smallTitle">预计今日发电:</span>
-        <div class="smallValue">1mwh</div>
+        <div class="smallValue">{{ Value.EPG }}wh</div>
       </div>
 
       <!--      总发电量-->
       <div class="smallBox">
         <span class="smallTitle">发电总量:</span>
-        <div class="smallValue">1mwh</div>
+        <div class="smallValue">{{ Value.Total }}wh</div>
       </div>
     </div>
     <div id="big">
+      <!--      今日天气-->
       <div class="box"></div>
       <div class="box"></div>
       <div class="box"></div>
@@ -69,6 +96,7 @@
   border-radius: 10px;
   background-color: white;
   position: relative;
+  box-shadow: 0 0 2px 0 #333;
 }
 
 .box {
@@ -77,9 +105,10 @@
   margin: 2rem 4rem 2rem 4rem;
   background-color: white;
   border-radius: 10px;
+  box-shadow: 0 0 5px 0 #333;
 }
 
-.smallTitle{
+.smallTitle {
   font-size: 20px;
   height: 35%;
   margin-top: 15px;
@@ -88,12 +117,12 @@
   font-weight: bold;
 }
 
-.smallValue{
-  position: absolute;
+.smallValue {
   font-weight: bold;
   margin-top: 75px;
-  margin-left: 30px;
-  font-size: 30px;
+  margin-right: 60px;
+  font-size: 40px;
+  text-align: right;
 }
 
 </style>
