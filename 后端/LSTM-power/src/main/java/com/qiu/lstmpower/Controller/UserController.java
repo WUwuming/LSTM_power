@@ -6,7 +6,6 @@ import com.qiu.lstmpower.Util.CodeGeneratorUtil;
 import com.qiu.lstmpower.Util.JsonResult;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +30,8 @@ public class UserController {
     @PostMapping("/Register")
     @ResponseBody
     public JsonResult Register(String UserName, String UserEmail, String Password, String Code) {
+        if (UserName == null && UserEmail == null && Password == null && Code == null)
+            return JsonResult.Fail();
         String UserId = CodeGeneratorUtil.snowflake();  //获取用户ID
         User user = new User();
         user.setUserId(UserId);
@@ -42,14 +43,15 @@ public class UserController {
     }
 
     /**
-     * @param response
      * @param UserEmail 用户登入邮箱
      * @param Password  用户密码
      * @return
      */
     @GetMapping("/Login")
     @ResponseBody
-    public JsonResult Login(HttpServletRequest request, HttpServletResponse response, String UserEmail, String Password) {
+    public JsonResult Login(HttpServletRequest request, String UserEmail, String Password) {
+        if (UserEmail == null && Password == null)
+            return JsonResult.Fail();
         JsonResult jsonResult;
         jsonResult = userService.Login(UserEmail, Password);
         if (jsonResult.getData() != null) {
@@ -109,7 +111,7 @@ public class UserController {
             session = httpServletRequest.getSession(false);
             session.setMaxInactiveInterval(0);
             session.removeAttribute("user");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("session错误");
             return JsonResult.Fail();
         }

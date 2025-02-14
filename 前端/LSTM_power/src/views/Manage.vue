@@ -205,4 +205,7 @@ const exitLogin = async () => {
   border-bottom: #0066FF 10px;
 }
 
+.router-link-exact-active{
+    color: #0066FF;
+}
 </style>

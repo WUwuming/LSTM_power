@@ -7,6 +7,8 @@ import ElementPlus from 'element-plus'
 import axiosInstance from './utils/request.js'
 import config from "./utils/config.js";
 
+import 'qweather-icons/font/qweather-icons.css'
+
 const app = createApp(App)
 
 app.provide('$api',axiosInstance)

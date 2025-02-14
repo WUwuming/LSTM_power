@@ -20,8 +20,11 @@ public class EmailController {
     //往邮箱发送验证码
     @GetMapping("/GetVerificationCode")
     @ResponseBody
-    public JsonResult GetVerificationCode(HttpServletRequest request,String userEmail){
+    public JsonResult GetVerificationCode(String userEmail){
         JsonResult jsonResult;
+        if (userEmail == null)
+            return JsonResult.Fail();
+
         try {
             jsonResult =  emailService.SendVerificationCode(userEmail);
         } catch (MessagingException e) {

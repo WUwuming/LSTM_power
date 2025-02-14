@@ -19,12 +19,12 @@ public class UtilsController {
 
     @GetMapping("/GetWeather")
     @ResponseBody
-    public JsonResult GetWeather(HttpServletRequest request, String ADCode) {
+    public JsonResult GetWeather(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) return JsonResult.Fail();
         User user =  (User)session.getAttribute("user");
         if (user == null) return JsonResult.Fail();
-        return utilsService.GetHFWeather(ADCode,user.getUserId());
+        return utilsService.GetHFWeather(user.getUserId());
     }
 
 }

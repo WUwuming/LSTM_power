@@ -2,6 +2,7 @@ package com.qiu.lstmpower.Impl;
 
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONParser;
+import com.qiu.lstmpower.Dao.SettingDao;
 import com.qiu.lstmpower.Service.UtilsService;
 import com.qiu.lstmpower.Util.JsonResult;
 import com.qiu.lstmpower.Util.Log;
@@ -20,11 +21,15 @@ public class UtilsServiceImpl implements UtilsService {
 
     @Resource
     transformLocationCode transformLocationCode;
+
+    @Resource
+    SettingDao settingDao;
     @Value("${HEFENG-API}")
     String HFAuthorization;
 
     @Override
-    public JsonResult GetHFWeather(String ADCode, String UserId) {
+    public JsonResult GetHFWeather( String UserId) {
+        String ADCode = settingDao.GetCity(UserId);
         String LocationCode = transformLocationCode.getLocationID(ADCode);
         try {
             String url = "https://devapi.qweather.com/v7/weather/now?location=" + LocationCode;

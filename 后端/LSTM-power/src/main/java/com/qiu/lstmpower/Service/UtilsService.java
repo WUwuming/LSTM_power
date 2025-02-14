@@ -5,5 +5,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UtilsService {
-    JsonResult GetHFWeather(String ADCode, String UserId);
+    JsonResult GetHFWeather(String UserId);
 }

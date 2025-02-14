@@ -65,6 +65,7 @@ let routes = [{
 const router = createRouter({
     history: createWebHistory(),
     routes,
+    linkActiveClass:'router-link-exact-active'
 })
 
 router.beforeEach((to, from, next) => {

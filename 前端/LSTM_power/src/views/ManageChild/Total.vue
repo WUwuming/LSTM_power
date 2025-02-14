@@ -17,6 +17,7 @@ let Value = reactive({
   Total: 4,
 })
 let TodayWeather = ref()
+let WeatherIcon = ref()
 onMounted(async () => {
   const res = await api({
     method: 'get',
@@ -27,6 +28,7 @@ onMounted(async () => {
   })
   TodayWeather.value = JSON.parse(res.data.data)
   console.log(TodayWeather.value)
+  WeatherIcon.value = 'qi-'+TodayWeather.value.now.icon+'-fill'
 })
 </script>
 
@@ -57,7 +59,15 @@ onMounted(async () => {
     </div>
     <div id="big">
       <!--      今日天气-->
-      <div class="box"></div>
+      <div class="box Weather" v-if="TodayWeather">
+        <span>当前温度:{{ TodayWeather.now.temp }}°C</span>
+        <span>当前气候:{{ TodayWeather.now.text }}</span>
+        <span>空气湿度:{{ TodayWeather.now.humidity }}</span>
+        <span>当前风向:{{ TodayWeather.now.windDir }}</span>
+        <span>降雨量:{{ TodayWeather.now.precip }}mm</span>
+        <i style="font-size:100px" :class='WeatherIcon'></i>
+      </div>
+
       <div class="box"></div>
       <div class="box"></div>
       <div class="box"></div>
@@ -125,4 +135,8 @@ onMounted(async () => {
   text-align: right;
 }
 
+.Weather {
+  display: flex;
+  flex-direction: column;
+}
 </style>
