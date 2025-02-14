@@ -43,7 +43,7 @@ const save = async () => {
 }
 
 const save_city = async function () {
-  const res = await api({
+  await api({
     method: "get",
     url: "/Setting/ChangeCity",
     params: {

@@ -1,5 +1,6 @@
 <script setup>
 import {inject, onMounted, reactive, ref} from "vue";
+import {ElLoading} from "element-plus";
 
 const api = inject("$api")
 
@@ -19,6 +20,12 @@ let Value = reactive({
 let TodayWeather = ref()
 let WeatherIcon = ref()
 onMounted(async () => {
+  const loading = ElLoading.service({
+    lock: true,
+    text: '加载中...',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+
   const res = await api({
     method: 'get',
     url: '/Utils/GetWeather',
@@ -27,8 +34,10 @@ onMounted(async () => {
     }
   })
   TodayWeather.value = JSON.parse(res.data.data)
-  console.log(TodayWeather.value)
-  WeatherIcon.value = 'qi-'+TodayWeather.value.now.icon+'-fill'
+  WeatherIcon.value = 'qi-' + TodayWeather.value.now.icon + '-fill'
+  setTimeout(()=>{
+    loading.close()
+  },500)
 })
 </script>
 
@@ -60,12 +69,17 @@ onMounted(async () => {
     <div id="big">
       <!--      今日天气-->
       <div class="box Weather" v-if="TodayWeather">
-        <span>当前温度:{{ TodayWeather.now.temp }}°C</span>
-        <span>当前气候:{{ TodayWeather.now.text }}</span>
-        <span>空气湿度:{{ TodayWeather.now.humidity }}</span>
-        <span>当前风向:{{ TodayWeather.now.windDir }}</span>
-        <span>降雨量:{{ TodayWeather.now.precip }}mm</span>
-        <i style="font-size:100px" :class='WeatherIcon'></i>
+        <span class="WTemp">{{ TodayWeather.now.temp }}°C</span>
+        <span class="WText">{{ TodayWeather.now.text }}</span>
+        <span class="WWind">{{ TodayWeather.now.windDir }} {{
+            TodayWeather.now.windScale
+          }}级 {{ TodayWeather.now.windSpeed }}m/s</span>
+        <span class="WRain" v-if="TodayWeather.now.precip == 0">无降雨</span>
+        <span class="WRain" v-if="TodayWeather.now.precip != 0">降雨量:{{ TodayWeather.now.precip }}mm</span>
+        <span class="WHum">空气湿度:{{ TodayWeather.now.humidity }}</span>
+
+
+        <i style="font-size:200px" :class='WeatherIcon' class="WIcon"></i>
       </div>
 
       <div class="box"></div>
@@ -138,5 +152,34 @@ onMounted(async () => {
 .Weather {
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.WIcon {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.WTemp {
+  font-size: 100px;
+}
+
+.WText {
+  margin-left: 20px;
+  font-size: 50px;
+}
+
+.WWind {
+  font-size: 30px;
+  margin-left: 30px;
+}
+.WRain{
+  font-size: 20px;
+  margin-left: 35px;
+}
+.WHum{
+  font-size: 20px;
+  margin-left: 40px;
 }
 </style>
